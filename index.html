@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+    <link href="https://fonts.googleapis.com/css?family=Metrophobic&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <title>Weather Dashboard</title>
+</head>
+
+<nav class="navbar navbar-dark bg-dark">
+    <h1 class="display-4">Weather Dashboard</h1>
+</nav>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-3" id="searchCity">
+            <div class="card" id="locations">
+                <div class="card-header">
+                    <div class="form-group" id="form-group" data-list="list">
+                        <label for="input">Search for your desired city: </label>
+                        <form class="example">
+                            <input type="text" placeholder="Search" id="citySearch">
+                            <button id="searchBtn" type="submit"><i class="fa fa-search"></i></button>
+                        </form>
+                    </div>
+                    <h4 class="recentSearch">Previous Searches: </h4>
+                    <ul id="searchHistory"></ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8" id="location">
+            <div class="card text-center" id="currentWeather">
+                <div class="card-header-2" id="today"></div>
+                <h4 class="city" id="city">City: </h3>
+                <h4 class="temp" id="temp">Temperate: </h4>
+                <h4 class="humidity" id="humidity">Humidity: </h4>
+                <h4 class="windSpeed" id="windSpeed">Wind Speed: </h4>
+                <h4 class="uvIndex" id="uvIndex">UV Index: </h4>
+            </div>
+            <div class="row-2">
+                <div class="col-sm-12" id="fiveDay">
+                    <h4 class="fiveForecast">5 Day Forecast </h4>
+                    <div class="card-deck">
+                        <div class="card" id="fiveDayCardOne">
+                            <div class="card-body">
+                                <h5 id="dayOne"></h5>
+                                <p class="temp" id="tempOne">Temperature: </p>
+                                <p class="humidity" id="humidityOne">Humidity: </p>
+                            </div>
+                        </div>
+                        <div class="card" id="fiveDayCardTwo">
+                            <div class="card-body">
+                                <h5 id="dayTwo"></h5>
+                                <p class="temp" id="tempTwo">Temperature: </p>
+                                <p class="humidity" id="humidityTwo">Humidity: </p>
+                            </div>
+                        </div>
+
+
+                        
+
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<body>
+    
+</body>
+</html>
