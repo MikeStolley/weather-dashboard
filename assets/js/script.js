@@ -5,11 +5,11 @@ var cityHistoryEl = document.getElementById("cityHistory")
 var fiveDayContainerEl = document.getElementById("fiveDayContainer")
 var cityContainerEl = document.getElementById("cityContainer");
 
-var city = []
+var cities = []
 var apiKey = '2680ad26bff39078c959033e473da2b5'
 
 var getCity = () => {
-    var loadCity = localStorage.getItem("city")
+    var loadCity = localStorage.getItem("cities")
     if(!loadCity) {
         return false;
     }
@@ -18,15 +18,15 @@ var getCity = () => {
 
     for (var i=0; i < loadCity.length; i++) {
         displayCities(loadCity[i])
-        cityHistoryEl.push(loadCity[i])
+        cities.push(loadCity[i])
     }
 }
 
 var saveCity = () => {
-    localStorage.setItem("city", JSON.stringify(cities));
+    localStorage.setItem("cities", JSON.stringify(cities));
 }
 
-var displaySearchedCity = (city) => {
+var displayCities = (city) => {
     var cityCardEl = document.createElement("div");
     var cityCardTitleEl = document.createElement("div")
     cityCardEl.setAttribute("class", "card")
@@ -92,3 +92,98 @@ var displayCityData = function(city, data) {
 
     currentContainerEl.appendChild(divCurrent);
 };
+
+var displayForecast = function(data) {
+    fiveDayContainerEl.textContent = "";
+    var forecastHead = document.getElementById("fiveDayForecast")
+    forecastHead.textContent = "Your Five Day Forecast: "
+
+    for (var i=1; i < 5; i++) {
+        var forecastTemp = Math.round(data.daily[i].temp.day);
+        var forecastHumidity = data.daily[i].humidity;
+        var forecastIcon = data.daily[i].weather.icon;
+
+
+        // create variables/elements to place weather and icon information
+        var cardEl = document.createElement("div");
+        cardEl.setAttribute("class","card col-xl-2 col-md-5 col-sm-10 mx-3 my-2 bg-primary text-white text-center");
+
+        var cardBodyEl = document.createElement("div");
+        cardBodyEl.setAttribute("class","card-body");
+
+        var cardDateEl = document.createElement("h6");
+        cardDateEl.textContent = moment().add(i, 'days').format("L");
+
+        var cardIconEl = document.createElement("img");
+        cardIconEl.setAttribute("src", "https://openweathermap.org/img/wn/" + iconForecast + "@2x.png")
+
+        var cardTempEl = document.createElement("p");
+        cardTempEl.setAttribute("class", "card-text");
+        cardTempEl.textContent = "Temperature:  " + tempForecast + "°F";
+
+        var cardHumidEl = document.createElement("p")
+        cardHumidEl.setAttribute("class", "card-text");
+        cardHumidEl.textContent = "Humidity:  " + humidityForecast + "%";
+
+    // Append the above information into the card created
+        cardBodyEl.appendChild(cardDateEl)
+        cardBodyEl.appendChild(cardIconEl)
+        cardBodyEl.appendChild(cardTempEl)
+        cardBodyEl.appendChild(cardHumidEl)
+    
+        cardEl.appendChild(cardBodyEl);
+        fiveDayContainerEl.appendChild(cardEl);
+    
+ 
+        cityFormEl.reset()
+    }
+    
+};
+
+var getCityData = function(city) {
+    event.preventDefault();
+
+    // API request and and variables for data set from API pull
+    var apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial&appid=" + apikey;
+    fetch(apiUrl).then(function(response) {
+        if (response.ok) {
+            response.json().then(function(data) {
+        var lat = data.coord.lat;
+        var lon = data.coord.lon;
+        var cityName = data.name
+        var searchHistory = cities.includes(cityName)
+        if (!searchHistory) {
+            cities.push(cityName)
+            saveCity()
+            displayCities(cityName)
+        }
+
+        getWeather(cityName, lat, lon);
+        
+        });
+
+        } else {
+            cityFormEl.reset();
+        }
+    });
+}
+
+var getWeather = (city, lat, lon) => {
+
+    var forecastUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&units=imperial&exclude=minutely,hourly&appid=" + apiKey;
+    
+    fetch(forecastUrl).then(function(response) {
+        response.json().then(function(data) {
+        
+            displayCityData(city, data);
+            displayForecast(data);
+        });
+    });
+}
+
+cityFormEl.addEventListener("submit", function() {
+    cityForm = cityInputEl.value.trim();
+    getCityData(cityForm);
+});
+
+
