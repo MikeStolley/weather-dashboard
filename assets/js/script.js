@@ -1,14 +1,13 @@
-var cityInputEl = document.getElementById("cityInput");
+var inputFormEl = document.getElementById("cityInput");
 var cityFormEl = document.getElementById("cityForm");
 var searchEl = document.getElementById("searchBtn");
-var searchHistoryEl = document.getElementById("searchHistory")
 var currentContainerEl = document.getElementById("currentContainer")
 var forecastDisplayEl = document.getElementById("forecastDisplay")
 
 var APIkey = "2680ad26bff39078c959033e473da2b5";
 var cities = []
 
-var loadCities = function() {
+var getCity = function() {
     var citiesLoaded = localStorage.getItem("cities")
     if(!citiesLoaded) {
         return false;
@@ -36,7 +35,7 @@ var displaySearchedCities = function(city) {
         getCityData(city)
     });
 
-    searchHistoryEl.appendChild(cityCardEl)
+
 
 }
 
@@ -180,11 +179,11 @@ var getWeatherData = function(city,latitude,longitude) {
 };
 
 
-loadCities()
+getCity()
 
 
 cityFormEl.addEventListener("submit", function() {
-    cityInput = cityInputEl.value.trim();
+    cityInput = inputFormEl.value.trim();
     getCityData(cityInput);
 })
 
